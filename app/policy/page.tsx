@@ -1,0 +1,298 @@
+// app/policy/page.tsx
+
+import Link from "next/link"
+import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
+
+const LAST_UPDATED = "April 26, 2026"
+const OWNER = "lodev"
+const CONTACT_EMAIL = "lodev@lods.fun"
+const SITE_URL = "https://atrasi.vercel.app"
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-3">
+      <h2 className="text-base font-semibold tracking-tight">{title}</h2>
+      <div className="text-sm text-muted-foreground leading-relaxed space-y-2">{children}</div>
+    </section>
+  )
+}
+
+function P({ children }: { children: React.ReactNode }) {
+  return <p>{children}</p>
+}
+
+function Ul({ items }: { items: string[] }) {
+  return (
+    <ul className="list-disc list-inside space-y-1 pl-1">
+      {items.map((item, i) => <li key={i}>{item}</li>)}
+    </ul>
+  )
+}
+
+export default function PolicyPage() {
+  return (
+    <main className="w-full min-h-screen">
+
+      {/* Nav */}
+      <nav className="w-full border-b border-border/60 px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
+        <Link href="/" className="text-base font-semibold tracking-tight">Atrasi</Link>
+        <Button asChild size="sm">
+          <Link href="/calc">Open calculator</Link>
+        </Button>
+      </nav>
+
+      {/* Content */}
+      <div className="max-w-2xl mx-auto px-6 py-16 space-y-10">
+
+        {/* Header */}
+        <div className="space-y-2">
+          <p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">Legal</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Privacy Policy & Terms of Use</h1>
+          <p className="text-sm text-muted-foreground">Last updated: {LAST_UPDATED}</p>
+        </div>
+
+        <Separator />
+
+        {/* Privacy Policy */}
+        <div className="space-y-1">
+          <p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">Privacy Policy</p>
+          <h2 className="text-xl font-semibold tracking-tight pt-1">How Atrasi handles your data</h2>
+        </div>
+
+        <Section title="1. Who we are">
+          <P>
+            Atrasi is operated by {OWNER}, an independent developer. This site is available at{" "}
+            <span className="font-mono text-xs text-foreground">{SITE_URL}</span>. For any
+            privacy-related questions, contact{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-foreground underline underline-offset-4">
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </P>
+        </Section>
+
+        <Section title="2. What data we collect">
+          <P>Atrasi collects minimal data. Here is a complete breakdown:</P>
+
+          <div className="space-y-4 pt-1">
+            <div className="space-y-1">
+              <p className="text-foreground font-medium text-sm">a) Data you enter into the calculator</p>
+              <P>
+                Values you type into the calculator (capital, risk amount, coin price, ATR, etc.) are
+                saved to your browser's <span className="font-mono text-xs text-foreground">localStorage</span>.
+                This data never leaves your device. It is not transmitted to any server, not stored by
+                Atrasi, and not accessible to anyone other than you on your own device.
+              </P>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-foreground font-medium text-sm">b) Data collected by Google AdSense</p>
+              <P>
+                Atrasi displays ads served by Google AdSense. Google may use cookies and similar
+                tracking technologies to serve personalized advertisements based on your browsing
+                history and interests. This data collection is governed entirely by Google's own
+                privacy policy. Atrasi does not receive or store this data.
+              </P>
+              <P>
+                You can opt out of personalized ads at{" "}
+               	<a 
+                  href="https://adssettings.google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline underline-offset-4"
+                >
+                  adssettings.google.com
+                </a>
+                {" "}or via the{" "}
+                
+								<a
+                  href="https://optout.networkadvertising.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline underline-offset-4"
+                >
+                  NAI opt-out tool
+                </a>
+                .
+              </P>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-foreground font-medium text-sm">c) Analytics (Vercel Analytics — if enabled)</p>
+              <P>
+                Atrasi may use Vercel Analytics to understand how visitors use the site. If enabled,
+                Vercel Analytics collects anonymized, aggregated data such as page views, referrer
+                URLs, and general geographic region (country level). It does not use cookies, does not
+                track individuals across sites, and does not collect personally identifiable
+                information. See{" "}
+               	<a 
+                  href="https://vercel.com/docs/analytics/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline underline-offset-4"
+                >
+                  Vercel's privacy policy
+                </a>
+                {" "}for full details.
+              </P>
+            </div>
+          </div>
+        </Section>
+
+        <Section title="3. Cookies">
+          <P>Atrasi itself does not set any cookies.</P>
+          <P>
+            Google AdSense sets its own cookies for ad serving and measurement purposes. These are
+            third-party cookies and are subject to Google's cookie policy. You can manage or disable
+            cookies through your browser settings at any time.
+          </P>
+        </Section>
+
+        <Section title="4. Third-party services">
+          <P>Atrasi uses the following third-party services, each with their own privacy policies:</P>
+          <Ul items={[
+            "Google AdSense — advertising (policies.google.com/privacy)",
+            "Vercel — hosting and optional analytics (vercel.com/legal/privacy-policy)",
+          ]} />
+          <P>
+            Atrasi is not responsible for the privacy practices of these third-party services.
+          </P>
+        </Section>
+
+        <Section title="5. Data retention">
+          <P>
+            Calculator inputs stored in <span className="font-mono text-xs text-foreground">localStorage</span>{" "}
+            persist until you clear your browser storage. Atrasi has no access to this data and
+            cannot delete it on your behalf — you can clear it at any time through your browser settings.
+          </P>
+          <P>
+            Atrasi does not maintain any server-side database of user data.
+          </P>
+        </Section>
+
+        <Section title="6. Children's privacy">
+          <P>
+            Atrasi is not directed at children under 13. We do not knowingly collect any personal
+            information from children. If you believe a child has provided personal information through
+            this site, please contact us and we will take appropriate steps.
+          </P>
+        </Section>
+
+        <Section title="7. Your rights">
+          <P>
+            Depending on your location, you may have rights under GDPR (EU), CCPA (California), or
+            similar laws, including the right to access, correct, or delete personal data held about
+            you. Since Atrasi holds no server-side personal data, most of these rights are exercised
+            directly through your browser (clearing localStorage, managing cookies).
+          </P>
+          <P>
+            For any privacy requests or questions, contact{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-foreground underline underline-offset-4">
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </P>
+        </Section>
+
+        <Section title="8. Changes to this policy">
+          <P>
+            We may update this privacy policy from time to time. The "last updated" date at the top
+            of this page will reflect any changes. Continued use of Atrasi after changes are posted
+            constitutes acceptance of the updated policy.
+          </P>
+        </Section>
+
+        <Separator />
+
+        {/* Terms of Use */}
+        <div className="space-y-1">
+          <p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">Terms of Use</p>
+          <h2 className="text-xl font-semibold tracking-tight pt-1">Rules for using Atrasi</h2>
+        </div>
+
+        <Section title="9. Acceptance of terms">
+          <P>
+            By accessing or using Atrasi, you agree to these terms. If you do not agree, please do
+            not use the site.
+          </P>
+        </Section>
+
+        <Section title="10. Not financial advice">
+          <P>
+            Atrasi is a mathematical calculator and educational tool. Nothing on this site constitutes
+            financial advice, investment advice, trading advice, or any other kind of professional
+            advice. All content is for informational and educational purposes only.
+          </P>
+          <P>
+            Trading cryptocurrencies involves significant risk, including the risk of losing all
+            capital invested. Past performance is not indicative of future results. Always consult a
+            qualified financial advisor before making any investment decisions.
+          </P>
+          <P>
+            {OWNER} and Atrasi are not liable for any trading losses, financial damages, or decisions
+            made based on information or calculations from this site.
+          </P>
+        </Section>
+
+        <Section title="11. No guarantees">
+          <P>
+            Atrasi is provided "as is" without warranties of any kind, express or implied. We do not
+            guarantee the accuracy, completeness, or fitness for a particular purpose of any
+            calculation or content on this site. Calculation results depend entirely on the inputs
+            you provide.
+          </P>
+        </Section>
+
+        <Section title="12. Acceptable use">
+          <P>You agree not to:</P>
+          <Ul items={[
+            "Use Atrasi for any unlawful purpose",
+            "Attempt to disrupt, hack, or interfere with the site or its infrastructure",
+            "Reproduce or resell any part of Atrasi without written permission",
+            "Represent Atrasi's output as professional financial advice to others",
+          ]} />
+        </Section>
+
+        <Section title="13. Intellectual property">
+          <P>
+            All content, design, and code on Atrasi is owned by {OWNER} unless otherwise noted.
+            You may not copy, reproduce, or redistribute any part of Atrasi without prior written
+            consent.
+          </P>
+        </Section>
+
+        <Section title="14. Governing law">
+          <P>
+            These terms are governed by the laws of the Republic of the Philippines, without regard
+            to conflict of law principles. Any disputes arising from use of this site shall be subject
+            to the exclusive jurisdiction of the courts of the Philippines.
+          </P>
+        </Section>
+
+        <Section title="15. Contact">
+          <P>
+            For any questions about this policy or these terms, reach out at{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-foreground underline underline-offset-4">
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </P>
+        </Section>
+
+        <Separator />
+
+        {/* Footer nav */}
+        <div className="flex items-center justify-between pt-2">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            ← Back to home
+          </Link>
+          <Button asChild size="sm">
+            <Link href="/calc">Open calculator</Link>
+          </Button>
+        </div>
+
+      </div>
+    </main>
+  )
+}
