@@ -1,3 +1,4 @@
+"use client";
 import { Separator } from "@/components/ui/separator"
 
 import LandingNavbar from "@/components/landing/LandingNavbar"
