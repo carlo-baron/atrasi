@@ -1,5 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card"
 
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { fromPopUp, fromSlideIn } from "@/animations/variants";
+
 const faqs = [
   {
     q: "What is ATR and why does it matter?",
@@ -27,16 +33,38 @@ const faqs = [
   },
 ]
 
+gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP);
+
 export default function FAQ(){
+  const containerRef = useRef<HTMLElement | null>(null);
+
+  useGSAP(() => {
+    if(!containerRef.current) return;
+
+    const tl = gsap.timeline({ 
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 60%',
+      },
+      defaults: { ease: 'power2.inOut' }
+    });
+
+		tl
+			.from('.h2', fromSlideIn)
+			.from('.cards', { ...fromPopUp, stagger: 0.15 })
+
+	}, { scope: containerRef });
+
 	return(
-		<section id="faq" className="max-w-5xl mx-auto px-6 py-20">
+		<section ref={containerRef} id="faq" className="max-w-5xl mx-auto px-6 py-20">
 			<div className="mb-10">
 				<p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground mb-2">FAQ</p>
-				<h2 className="text-3xl font-semibold tracking-tight">Common questions</h2>
+				<h2 className="h2 text-3xl font-semibold tracking-tight">Common questions</h2>
 			</div>
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				{faqs.map((faq) => (
-					<Card key={faq.q}>
+					<Card className='cards' key={faq.q}>
 						<CardContent className="p-5 space-y-2">
 							<p className="font-medium text-sm">{faq.q}</p>
 							<p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
