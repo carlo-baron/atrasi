@@ -1,3 +1,8 @@
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { fromFadeIn, fromPopUp, fromSlideIn } from "@/animations/variants";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -9,19 +14,43 @@ const steps = [
   { n: "04", title: "Read the output", body: "Position size, units, stop loss, take profit, leverage, and break-even win rate — all derived from your inputs." },
 ]
 
+gsap.registerPlugin(ScrollTrigger);
 export default function Tutorial(){
+	const containerRef = useRef<HTMLElement | null>(null);
+
+	useGSAP(() => {
+		if(!containerRef.current) return;
+
+		const tl = gsap.timeline({ 
+			scrollTrigger: {
+				trigger: containerRef.current,
+				start: 'top 80%'
+			},
+			defaults: { ease: 'power2.in' }
+		});
+		tl
+			.from('.h2', fromSlideIn)
+			.from('.desc', fromSlideIn, '-=0.2')
+			.from('.card', {
+				...fromPopUp,
+				stagger: 0.15
+			})
+			.from('.btn', fromFadeIn)
+
+	}, );
+
 	return(
-		<section id="how-it-works" className="max-w-5xl mx-auto px-6 py-20">
+		<section ref={containerRef} id="how-it-works" className="max-w-5xl mx-auto px-6 py-20">
 			<div className="mb-10">
 				<p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground mb-2">How it works</p>
-				<h2 className="text-3xl font-semibold tracking-tight">Four steps, every trade</h2>
-				<p className="mt-2 text-muted-foreground max-w-lg">
+				<h2 className="h2 text-3xl font-semibold tracking-tight">Four steps, every trade</h2>
+				<p className="desc mt-2 text-muted-foreground max-w-lg">
 					The framework enforces a strict order so nothing is calculated before its inputs exist.
 				</p>
 			</div>
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				{steps.map((s) => (
-					<Card key={s.n}>
+					<Card className='card' key={s.n}>
 						<CardContent className="p-5 flex gap-4">
 							<span className="text-2xl font-semibold font-mono text-muted-foreground/40 leading-none mt-0.5 shrink-0">
 								{s.n}
@@ -34,7 +63,7 @@ export default function Tutorial(){
 					</Card>
 				))}
 			</div>
-			<div className="mt-8">
+			<div className="mt-8 btn">
 				<Button asChild>
 					<Link href="/calc">Try it now</Link>
 				</Button>

@@ -4,22 +4,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-
-const fromSlideIn = {
-	y: -20,
-	opacity: 0,
-}
-
-const fromFadeIn = {
-	opacity: 0,
-}
-
-const fromPopUp = {
-  scale: 0.8,
-  opacity: 0,
-  ease: 'back.out',
-  duration: 0.5,
-};
+import { fromPopUp, fromSlideIn, fromFadeIn } from "@/animations/variants";
 
 export default function Hero(){
 	const containerRef = useRef<HTMLElement | null>(null);
