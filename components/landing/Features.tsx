@@ -5,51 +5,52 @@ import { useGSAP } from "@gsap/react";
 import { Card, CardContent } from "@/components/ui/card"
 import { fromPopUp, fromSlideIn } from "@/animations/variants";
 
-
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP);
+
 export default function Features(){
-	const containerRef = useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
+  const h2Ref = useRef<HTMLHeadingElement | null>(null);
+  const descRef = useRef<HTMLParagraphElement | null>(null);
+  const cardsRef = useRef<HTMLDivElement | null>(null);
 
-	useGSAP(() => {
-		if(!containerRef.current) return;
+  useGSAP(() => {
+    if(!containerRef.current) return;
+    const tl = gsap.timeline({ 
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 60%',
+      },
+      defaults: { ease: 'power2.inOut' }
+    });
+    tl
+      .from(h2Ref.current, fromSlideIn)
+      .from(descRef.current, fromSlideIn, '-=0.2')
+      .from(cardsRef.current!.children, { ...fromPopUp, stagger: 0.15 }, '-=0.2')
 
-		const tl = gsap.timeline({ 
-			scrollTrigger: {
-				trigger: containerRef.current,
-				start: 'top 80%'
-			},
-			defaults: { ease: 'power2.in' }
-		});
-		tl
-			.from('.h2', fromSlideIn)
-			.from('.desc', fromSlideIn, '-=0.2')
-			.from('.card', {
-				...fromPopUp,
-				stagger: 0.15
-			})
+	}, { scope: containerRef });
 
-	}, );
 	return(
-		<section ref={containerRef} className="max-w-5xl mx-auto px-6 py-20">
-			<div className="mb-10">
-				<p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground mb-2">Features</p>
-				<h2 className="h2 text-3xl font-semibold tracking-tight">Everything the math requires</h2>
-				<p className="desc mt-2 text-muted-foreground max-w-lg">
-					No fluff, no extra steps. Every feature exists because the risk-first framework demands it.
-				</p>
-			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-				{features.map((f) => (
-					<Card className='card' key={f.title}>
-						<CardContent className="p-5 space-y-2">
-							<p className="font-medium text-sm">{f.title}</p>
-							<p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
-						</CardContent>
-					</Card>
-				))}
-			</div>
-		</section>
-	);
+    <section ref={containerRef} className="max-w-5xl mx-auto px-6 py-20">
+      <div className="mb-10">
+        <p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground mb-2">Features</p>
+        <h2 ref={h2Ref} className="text-3xl font-semibold tracking-tight">Everything the math requires</h2>
+        <p ref={descRef} className="mt-2 text-muted-foreground max-w-lg">
+          No fluff, no extra steps. Every feature exists because the risk-first framework demands it.
+        </p>
+      </div>
+      <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {features.map((f) => (
+          <Card key={f.title}>
+            <CardContent className="p-5 space-y-2">
+              <p className="font-medium text-sm">{f.title}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 const features = [

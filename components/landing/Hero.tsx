@@ -6,13 +6,15 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { fromPopUp, fromSlideIn, fromFadeIn } from "@/animations/variants";
 
+gsap.registerPlugin(useGSAP);
+
 export default function Hero(){
 	const containerRef = useRef<HTMLElement | null>(null);
 
 	useGSAP(() => { 
 		if(!containerRef.current) return;
 
-		const tl = gsap.timeline({defaults: { ease: 'power2.in' }});
+		const tl = gsap.timeline({defaults: { ease: 'power2.inOut' }});
 
 		tl
 			.from('.h1', fromSlideIn)
@@ -22,7 +24,6 @@ export default function Hero(){
 				stagger: 0.20
 			})
 			.from('.badge', fromFadeIn)
-
 	}, { scope: containerRef });
 
 	return(

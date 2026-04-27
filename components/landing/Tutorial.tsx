@@ -15,59 +15,60 @@ const steps = [
 ]
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP);
+
 export default function Tutorial(){
-	const containerRef = useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
+  const h2Ref = useRef<HTMLHeadingElement | null>(null);
+  const descRef = useRef<HTMLParagraphElement | null>(null);
+  const cardsRef = useRef<HTMLDivElement | null>(null);
+  const btnRef = useRef<HTMLDivElement | null>(null);
 
-	useGSAP(() => {
-		if(!containerRef.current) return;
-
-		const tl = gsap.timeline({ 
-			scrollTrigger: {
-				trigger: containerRef.current,
-				start: 'top 80%'
-			},
-			defaults: { ease: 'power2.in' }
-		});
-		tl
-			.from('.h2', fromSlideIn)
-			.from('.desc', fromSlideIn, '-=0.2')
-			.from('.card', {
-				...fromPopUp,
-				stagger: 0.15
-			})
-			.from('.btn', fromFadeIn)
-
-	}, );
+  useGSAP(() => {
+    if(!containerRef.current) return;
+    const tl = gsap.timeline({ 
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 60%',
+      },
+      defaults: { ease: 'power2.inOut' }
+    });
+    tl
+      .from(h2Ref.current, fromSlideIn)
+      .from(descRef.current, fromSlideIn, '-=0.2')
+      .from(cardsRef.current!.children, { ...fromPopUp, stagger: 0.15 }, '-=0.2')
+      .from(btnRef.current, fromFadeIn)
+	}, { scope: containerRef });
 
 	return(
-		<section ref={containerRef} id="how-it-works" className="max-w-5xl mx-auto px-6 py-20">
-			<div className="mb-10">
-				<p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground mb-2">How it works</p>
-				<h2 className="h2 text-3xl font-semibold tracking-tight">Four steps, every trade</h2>
-				<p className="desc mt-2 text-muted-foreground max-w-lg">
-					The framework enforces a strict order so nothing is calculated before its inputs exist.
-				</p>
-			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-				{steps.map((s) => (
-					<Card className='card' key={s.n}>
-						<CardContent className="p-5 flex gap-4">
-							<span className="text-2xl font-semibold font-mono text-muted-foreground/40 leading-none mt-0.5 shrink-0">
-								{s.n}
-							</span>
-							<div className="space-y-1">
-								<p className="font-medium text-sm">{s.title}</p>
-								<p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
-							</div>
-						</CardContent>
-					</Card>
-				))}
-			</div>
-			<div className="mt-8 btn">
-				<Button asChild>
-					<Link href="/calc">Try it now</Link>
-				</Button>
-			</div>
-		</section>
-	);
+    <section ref={containerRef} id="how-it-works" className="max-w-5xl mx-auto px-6 py-20">
+      <div className="mb-10">
+        <p className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground mb-2">How it works</p>
+        <h2 ref={h2Ref} className="text-3xl font-semibold tracking-tight">Four steps, every trade</h2>
+        <p ref={descRef} className="mt-2 text-muted-foreground max-w-lg">
+          The framework enforces a strict order so nothing is calculated before its inputs exist.
+        </p>
+      </div>
+      <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {steps.map((s) => (
+          <Card key={s.n}>
+            <CardContent className="p-5 flex gap-4">
+              <span className="text-2xl font-semibold font-mono text-muted-foreground/40 leading-none mt-0.5 shrink-0">
+                {s.n}
+              </span>
+              <div className="space-y-1">
+                <p className="font-medium text-sm">{s.title}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div ref={btnRef} className="mt-8">
+        <Button asChild>
+          <Link href="/calc">Try it now</Link>
+        </Button>
+      </div>
+    </section>
+  );
 }
